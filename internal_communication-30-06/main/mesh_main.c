@@ -366,7 +366,7 @@ void esp_mesh_p2p_rx_main(void *arg)
 
             uint8_t *temp = data.data;
 
-            //-----------------------FIM TRATAMENTO NUMERO DA ESTAÇÃO --------------------------------
+            //-----------------------TRATAMENTO NUMERO DA ESTAÇÃO --------------------------------
             char aux_num_station_01[30];
             char aux_num_station_02[30];
             //criar chars para quebrar o numero recebido da folha;
