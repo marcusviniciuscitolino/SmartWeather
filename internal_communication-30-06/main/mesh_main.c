@@ -209,7 +209,7 @@ void esp_mesh_p2p_tx_main(void *arg)
             DHT11_init(18);
 
             //vetor para transportar os dados para o Root
-            uint8_t digits[6];
+            uint8_t digits[7];
 
             //variaveis de controle
             int DHT = 0;
@@ -236,6 +236,8 @@ void esp_mesh_p2p_tx_main(void *arg)
             //digits[4] e digits[5] indicam que o número da Estação
             digits[4] = 0;
             digits[5] = 1;
+
+            digits[6] = 1;
 
             data.data = digits;
             err = esp_mesh_send(NULL, &data, MESH_DATA_P2P, NULL, 0);
@@ -366,93 +368,102 @@ void esp_mesh_p2p_rx_main(void *arg)
 
             uint8_t *temp = data.data;
 
-            //-----------------------TRATAMENTO NUMERO DA ESTAÇÃO --------------------------------
-            char aux_num_station_01[30];
-            char aux_num_station_02[30];
-            //criar chars para quebrar o numero recebido da folha;
-
-            sprintf(aux_num_station_01, "%d", temp[4]);
-            sprintf(aux_num_station_02, "%d", temp[5]);
-            //inserindo as posições recebidas da folha nos chars criados acima;
-
-            strcat(aux_num_station_01, aux_num_station_02);
-            //concatenando ambos, criando um vetor de char com o numero;
-
-            //-----------------------FIM TRATAMENTO NUMERO DA ESTAÇÃO --------------------------------
-
-            //------------------------TRATAMENTO DE TEMPERATURA RECEBIDA-----------------------
-            char aux_char_temperatura[30];
-            char aux_char_digit_temperatura[30];
-            //criar chars para quebrar o vetor recebido da folha;
-
-            sprintf(aux_char_temperatura, "%d", temp[0]);
-            sprintf(aux_char_digit_temperatura, "%d", temp[1]);
-            //inserindo as posições recebidas da folha nos chars criados acima;
-
-            strcat(aux_char_temperatura, aux_char_digit_temperatura);
-            //concatenando ambos, criando um vetor de char com a temp;
-
-            int aux_temperatura = 0;
-            aux_temperatura = atoi(aux_char_temperatura);
-            //------------------------FIM TRATAMENTO DE TEMPERATURA RECEBIDA--------------------
-
-            //------------------------TRATAMENTO DE UMIDADE RECEBIDA-----------------------
-            char aux_char_umidade[30];
-            char aux_char_digit_umidade[30];
-            //criar chars para quebrar o vetor recebido da folha;
-
-            sprintf(aux_char_umidade, "%d", temp[2]);
-            sprintf(aux_char_digit_umidade, "%d", temp[3]);
-            //inserindo as posições recebidas da folha nos chars criados acima;
-
-            strcat(aux_char_umidade, aux_char_digit_umidade);
-            //concatenando ambos, criando um vetor de char com a temp;
-
-            int aux_umidade = 0;
-            aux_umidade = atoi(aux_char_umidade);
-            //------------------------FIM TRATAMENTO DE UMIDADE RECEBIDA--------------------
-
-            printf("Temperatura recebida ---> %d \n", aux_temperatura);
-            printf("Umidade recebida ---> %d \n", aux_umidade);
-
-            unsigned long mt = esp_timer_get_time() / 1000;
-
-            if (mt - msprev > 30000)
+            if (temp[6] == 1)
             {
 
-                esp_mqtt_client_stop(mqtt_client);
-                esp_mqtt_client_start(mqtt_client);
+                //-----------------------TRATAMENTO NUMERO DA ESTAÇÃO --------------------------------
+                char aux_num_station_01[30];
+                char aux_num_station_02[30];
+                //criar chars para quebrar o numero recebido da folha;
 
-                //---------------ENVIO DA TEMPERATURA---------------------------
-                char aux_char_temp[100];
-                char aux_string[100];
+                sprintf(aux_num_station_01, "%d", temp[4]);
+                sprintf(aux_num_station_02, "%d", temp[5]);
+                //inserindo as posições recebidas da folha nos chars criados acima;
 
-                sprintf(aux_char_temp, "%d", aux_temperatura);
-                sprintf(aux_string, "t|");
-                strcat(aux_string, aux_char_temp);
+                strcat(aux_num_station_01, aux_num_station_02);
+                int aux_num_station = 0;
+                aux_num_station = atoi(aux_num_station_01);
+                //concatenando ambos, criando um vetor de char com o numero;
 
-                char url[100];
-                sprintf(url, "/iot/station");
-                strcat(url, aux_num_station_01);
-                strcat(url, "/attrs");
+                //-----------------------FIM TRATAMENTO NUMERO DA ESTAÇÃO --------------------------------
 
-                int msg_id = esp_mqtt_client_publish(mqtt_client, url, aux_string, 0, 1, 0);
-                ESP_LOGI(TAG, "sent publish, msg_id=%d", msg_id);
-                //---------------FIM ENVIO DA TEMPERATURA------------------------------------------------------
+                //------------------------TRATAMENTO DE TEMPERATURA RECEBIDA-----------------------
+                char aux_char_temperatura[30];
+                char aux_char_digit_temperatura[30];
+                //criar chars para quebrar o vetor recebido da folha;
 
-                //--------------- ENVIO DA UMIDADE---------------------------
-                char aux_char_umid[100];
-                char aux_string2[100];
+                sprintf(aux_char_temperatura, "%d", temp[0]);
+                sprintf(aux_char_digit_temperatura, "%d", temp[1]);
+                //inserindo as posições recebidas da folha nos chars criados acima;
 
-                sprintf(aux_char_umid, "%d", aux_umidade);
-                sprintf(aux_string2, "h|");
-                strcat(aux_string2, aux_char_umid);
+                strcat(aux_char_temperatura, aux_char_digit_temperatura);
+                //concatenando ambos, criando um vetor de char com a temp;
 
-                int msg_id2 = esp_mqtt_client_publish(mqtt_client, url, aux_string2, 0, 1, 0);
-                ESP_LOGI(TAG, "sent publish, msg_id=%d", msg_id2);
-                //--------------- FIM ENVIO DA UMIDADE---------------------------
+                int aux_temperatura = 0;
+                aux_temperatura = atoi(aux_char_temperatura);
+                //------------------------FIM TRATAMENTO DE TEMPERATURA RECEBIDA--------------------
 
-                msprev = mt;
+                //------------------------TRATAMENTO DE UMIDADE RECEBIDA-----------------------
+                char aux_char_umidade[30];
+                char aux_char_digit_umidade[30];
+                //criar chars para quebrar o vetor recebido da folha;
+
+                sprintf(aux_char_umidade, "%d", temp[2]);
+                sprintf(aux_char_digit_umidade, "%d", temp[3]);
+                //inserindo as posições recebidas da folha nos chars criados acima;
+
+                strcat(aux_char_umidade, aux_char_digit_umidade);
+                //concatenando ambos, criando um vetor de char com a temp;
+
+                int aux_umidade = 0;
+                aux_umidade = atoi(aux_char_umidade);
+                //------------------------FIM TRATAMENTO DE UMIDADE RECEBIDA--------------------
+
+                printf("\n\n>--- Recebido Estação ---> %d \n", aux_num_station);
+                printf("Temperatura recebida ---> %d \n", aux_temperatura);
+                printf("Umidade recebida ---> %d \n\n", aux_umidade);
+
+                unsigned long mt = esp_timer_get_time() / 1000;
+
+                if (mt - msprev > 30000)
+                {
+
+                    esp_mqtt_client_stop(mqtt_client);
+                    esp_mqtt_client_start(mqtt_client);
+                    
+                    //---------------Prepara URL---------------------------
+                    char url[100];
+                    sprintf(url, "/iot/station");
+                    strcat(url, aux_num_station_01);
+                    strcat(url, "/attrs");
+                    //--------------- FIM Prepara URL---------------------------
+
+                    //---------------ENVIO DA TEMPERATURA---------------------------
+                    char aux_char_temp[100];
+                    char aux_string[100];
+
+                    sprintf(aux_char_temp, "%d", aux_temperatura);
+                    sprintf(aux_string, "t|");
+                    strcat(aux_string, aux_char_temp);
+
+                    int msg_id = esp_mqtt_client_publish(mqtt_client, url, aux_string, 0, 1, 0);
+                    ESP_LOGI(TAG, "sent publish, msg_id=%d", msg_id);
+                    //---------------FIM ENVIO DA TEMPERATURA------------------------------------------------------
+
+                    //--------------- ENVIO DA UMIDADE---------------------------
+                    char aux_char_umid[100];
+                    char aux_string2[100];
+
+                    sprintf(aux_char_umid, "%d", aux_umidade);
+                    sprintf(aux_string2, "h|");
+                    strcat(aux_string2, aux_char_umid);
+
+                    int msg_id2 = esp_mqtt_client_publish(mqtt_client, url, aux_string2, 0, 1, 0);
+                    ESP_LOGI(TAG, "sent publish, msg_id=%d", msg_id2);
+                    //--------------- FIM ENVIO DA UMIDADE---------------------------
+
+                    msprev = mt;
+                }
             }
         }
 
