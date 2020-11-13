@@ -918,3 +918,16 @@
 239327	239355	6269348385518244	CMakeFiles/internal_communication-30-06.elf.dir/project_elf_src.c.obj	f19607c1114c77fd
 239355	246211	6269348453933951	internal_communication-30-06.elf	f3ead9ec9a27f3
 246212	246712	6269348459147239	.bin_timestamp	cfb5deadfb1759a3
+7	8098	6269350344005195	build.ninja	becb1bcbb1c992df
+67	245	0	esp-idf/partition_table/CMakeFiles/partition_table	796701c4c3ae6099
+246	313	6269346826927203	bootloader-prefix/src/bootloader-stamp/bootloader-build	44e575735f914dd4
+246	313	6269346826927203	bootloader/bootloader.elf	44e575735f914dd4
+246	313	6269346826927203	bootloader/bootloader.bin	44e575735f914dd4
+246	313	6269346826927203	bootloader/bootloader.map	44e575735f914dd4
+69	355	6269350348455088	esp-idf/app_update/CMakeFiles/__idf_app_update.dir/esp_app_desc.c.obj	1b77f511d5e6017f
+356	416	6269350349123307	esp-idf/app_update/libapp_update.a	18a2443b9ac9c971
+416	1473	6269350359436095	esp-idf/main/CMakeFiles/__idf_main.dir/mesh_main.c.obj	599e4e793e2a288
+1478	1539	6269350360333706	esp-idf/main/libmain.a	7baefd780916c3a8
+1539	3189	6269350376658606	esp-idf/esp32/ld/esp32.project.ld	37602b6286cc84ff
+3189	8002	6269350424741872	internal_communication-30-06.elf	f3ead9ec9a27f3
+8003	8497	6269350429875350	.bin_timestamp	cfb5deadfb1759a3
