@@ -1,0 +1,6 @@
+source "C:/Users/vinic/Desktop/esp-idf/components/app_update/Kconfig.projbuild"
+source "C:/Users/vinic/Desktop/esp-idf/components/bootloader/Kconfig.projbuild"
+source "C:/Users/vinic/Desktop/esp-idf/components/esptool_py/Kconfig.projbuild"
+source "C:/Users/vinic/Desktop/esp-idf/components/partition_table/Kconfig.projbuild"
+source "C:/Users/vinic/Desktop/TCC/SmartWeather/internal_communication-30-06/main/Kconfig.projbuild"
+source "C:/Users/vinic/Desktop/esp-idf/examples/common_components/protocol_examples_common/Kconfig.projbuild"

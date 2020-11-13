@@ -203,7 +203,7 @@ void esp_mesh_p2p_tx_main(void *arg)
 			DHT11_init(18);
 			
 			//vetor para transportar os dados para o Root
-			uint8_t digits[9];
+			uint8_t digits[6];
 			
 			//variaveis de controle
 			int DHT = 0;
